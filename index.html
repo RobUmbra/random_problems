@@ -15,6 +15,9 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             max-width: 920px;
@@ -238,10 +241,13 @@
             display: flex;
             gap: 8px;
             margin-top: 8px;
+            width: 100%;
         }
 
         .search-input {
             flex: 1;
+            min-width: 0; /* Allows the input to shrink properly within the flexbox */
+            box-sizing: border-box; /* Includes padding inside the element's width */
             padding: 9px 14px;
             font-size: 15px;
             border: 1px solid #ced4da;
