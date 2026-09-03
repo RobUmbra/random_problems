@@ -1,0 +1,91 @@
+[MPFG_2020_1]
+Find the value of $x$ such that $3x + 14 = 59$.
+
+[MPFG_2020_3]
+Compute the sum of all distinct prime factors of $2020$.
+
+[MPFG_2020_5]
+A rectangular garden has a perimeter of $54$ meters. If the length of the garden is $7$ meters greater than its width, find the area of the garden in square meters.
+
+[MPFG_2020_7]
+Let $f(x) = x^2 - 6x + 13$. What is the minimum possible value of $f(x)$ for all real numbers $x$?
+
+[MPFG_2020_10]
+In $\triangle ABC$, the side lengths are $AB = 13$, $BC = 14$, and $CA = 15$. Find the length of the altitude drawn from vertex $A$ to side $\overline{BC}$.
+
+[MPFG_2020_15]
+Determine the number of positive integers $n \le 1000$ that are relatively prime to both $6$ and $10$.
+
+[MPFG_2020_20]
+Let $S$ be the set of all complex numbers $z$ satisfying $|z - 3 - 4i| \le 2$. Find the maximum possible value of $|z|^2$.
+
+[MPFG_2021_2]
+Evaluate the numerical expression:
+$$\frac{2^{2021} - 2^{2019}}{2^{2018}}$$
+
+[MPFG_2021_5]
+A sequence is defined recursively by $a_1 = 3$ and $a_{n+1} = 2a_n - 1$ for all integers $n \ge 1$. Compute the value of $a_6$.
+
+[MPFG_2021_8]
+How many three-digit integers have digits that are strictly increasing from left to right? (For example, $137$ and $459$ qualify, but $334$ and $752$ do not.)
+
+[MPFG_2021_12]
+Find the sum of all real solutions to the logarithmic equation:
+$$\log_2(x^2 - 8x + 16) = 4$$
+
+[MPFG_2021_18]
+Let $P(x)$ be a polynomial with integer coefficients such that $P(1) = 4$, $P(2) = 7$, and $P(3) = 12$. What is the smallest possible positive value of $P(4)$?
+
+[MPFG_2022_4]
+If $\sin \theta + \cos \theta = \frac{5}{4}$, determine the exact value of $\sin(2\theta)$.
+
+[MPFG_2022_6]
+A fair six-sided die is rolled twice. What is the probability that the product of the two rolled numbers is a multiple of $4$?
+
+[MPFG_2022_9]
+A circle of radius $r$ is inscribed inside a right triangle with legs of length $8$ and $15$. Compute the value of $r$.
+
+[MPFG_2022_14]
+Compute the coefficient of $x^4$ in the algebraic expansion of:
+$$\left(2x - \frac{1}{x}\right)^8$$
+
+[MPFG_2023_5]
+If $a$ and $b$ are positive real numbers such that $a^2 + b^2 = 90$ and $ab = 27$, find the value of $a + b$.
+
+[MPFG_2023_8]
+A triangle has vertices at coordinates $(0,0)$, $(6,0)$, and $(2,8)$ in the Cartesian plane. Find the coordinates of its centroid $(G_x, G_y)$.
+
+[MPFG_2023_10]
+Find the remainder when $7^{2023}$ is divided by $100$.
+
+[MPFG_2023_16]
+Let $a, b, c$ be the three roots of the cubic equation $x^3 - 7x^2 + 14x - 8 = 0$. Evaluate:
+$$\frac{1}{a} + \frac{1}{b} + \frac{1}{c}$$
+
+[MPFG_2024_6]
+How many integers $n$ satisfy the inequality $|2n - 7| \le 15$?
+
+[MPFG_2024_9]
+Compute the sum of the infinite geometric series:
+$$S = 12 - 4 + \frac{4}{3} - \frac{4}{9} + \cdots$$
+
+[MPFG_2024_11]
+Let $ABCD$ be a trapezoid with $AB \parallel CD$, $AB = 10$, and $CD = 25$. If the diagonals intersect at point $E$ and the area of $\triangle ABE$ is $16$, find the total area of trapezoid $ABCD$.
+
+[MPFG_2024_17]
+Find all real values of $x$ satisfying:
+$$\sqrt{x + 5} - \sqrt{x - 3} = 2$$
+
+[MFPG_2025_5]
+Two runners start at the same point on a $400$-meter circular track and run in opposite directions. One runs at $6\text{ m/s}$ and the other at $4\text{ m/s}$. After how many seconds will they meet for the third time?
+
+[MFPG_2025_10]
+Solve for the positive integer $n$ such that:
+$$\binom{n}{2} = 78$$
+
+[MFPG_2025_15]
+A quadratic polynomial $Q(x) = ax^2 + bx + c$ satisfies $Q(0) = 3$, $Q(1) = 6$, and $Q(2) = 13$. Find the value of $Q(5)$.
+
+[MFPG_2025_20]
+Let $x, y, z$ be positive real numbers such that $x + y + z = 1$. Find the minimum possible value of:
+$$\frac{1}{x} + \frac{1}{y} + \frac{1}{z}$$
