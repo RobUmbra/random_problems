@@ -802,23 +802,30 @@
             problemsPage.style.display = 'block';
             window.scrollTo(0, 0);
         }
-
+        // Helper to prevent mathematical '<' and '>' from being parsed as HTML tags
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+        }
         // Render Problems on Second Page
         function renderProblems(problems, metaText) {
             problemsContainer.innerHTML = '';
             worksheetMeta.textContent = `${metaText} | ${new Date().toLocaleDateString()}`;
-
+        
             problems.forEach((prob, index) => {
                 const row = document.createElement('div');
                 row.className = 'problem-row';
-
+        
                 const tagBadges = prob.tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
-
+        
+                // Use escapeHtml(prob.content) instead of raw prob.content
                 row.innerHTML = `
                     <div class="problem-header">
                         <span class="problem-number">Problem ${index + 1}</span>
                     </div>
-                    <div class="problem-body">${prob.content}</div>
+                    <div class="problem-body">${escapeHtml(prob.content)}</div>
                     <div class="problem-footer">
                         <span class="origin-code">[${prob.origin}]</span>
                         ${tagBadges}
@@ -826,12 +833,11 @@
                 `;
                 problemsContainer.appendChild(row);
             });
-
+        
             if (window.MathJax && MathJax.typesetPromise) {
                 MathJax.typesetPromise();
             }
         }
-
         // Event Listeners
         generateBtn.addEventListener('click', generateRandomSet);
         rerollBtn.addEventListener('click', generateRandomSet);
