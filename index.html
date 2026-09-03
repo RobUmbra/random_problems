@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problem Generator</title>
+
+    <!-- MathJax for rendering LaTeX -->
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+        startup: { typeset: false }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 920px;
+            margin: 30px auto;
+            padding: 20px;
+            line-height: 1.6;
+            position: relative;
+            color: #222;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4e/Mathematical_symbols_background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Card Panels */
+        #landing-page, #problems-page {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        #landing-page {
+            margin-top: 20px;
+        }
+
+        #problems-page {
+            display: none;
+        }
+
+        h1, h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* Filter Sections */
+        .filter-section {
+            background: #f8f9fa;
+            border: 1px solid #e2e5e8;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin: 18px 0;
+            text-align: left;
+        }
+
+        .filter-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-actions {
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .filter-actions a {
+            color: #0056b3;
+            text-decoration: none;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .filter-actions a:hover {
+            text-decoration: underline;
+        }
+
+        /* Interactive Pill Buttons */
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #b8c7d9;
+            background: #ffffff;
+            color: #495057;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .pill:hover {
+            border-color: #0056b3;
+            color: #0056b3;
+        }
+
+        .pill.active {
+            background: #0056b3;
+            border-color: #0056b3;
+            color: #ffffff;
+        }
+
+        /* Dual-Thumb Range Slider */
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .slider-value-badge {
+            color: #0056b3;
+            font-weight: bold;
+        }
+
+        .dual-slider-wrapper {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            margin: 8px 0 12px 0;
+        }
+
+        .slider-track {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 3px;
+            z-index: 1;
+        }
+
+        .slider-highlight {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            background-color: #0056b3;
+            border-radius: 3px;
+            z-index: 2;
+        }
+
+        .dual-slider-wrapper input[type="range"] {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            appearance: none;
+            z-index: 3;
+        }
+
+        .dual-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #0056b3;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .dual-slider-wrapper input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #0056b3;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .single-range {
+            width: 100%;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        .range-summary {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #0056b3;
+            background: #eef5ff;
+            padding: 6px;
+            border-radius: 4px;
+            margin-top: 6px;
+        }
+
+        /* Direct Search Bar */
+        .search-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 9px 14px;
+            font-size: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #0056b3;
+        }
+
+        /* Buttons */
+        button {
+            font-size: 16px;
+            padding: 9px 20px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        button:hover {
+            background-color: #004085;
+        }
+
+        .btn-green {
+            background-color: #28a745;
+            font-size: 18px;
+            padding: 12px 34px;
+            margin-top: 15px;
+            font-weight: bold;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-green:hover {
+            background-color: #218838;
+        }
+
+        .secondary-btn {
+            background-color: #6c757d;
+        }
+
+        .secondary-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .reroll-btn {
+            background-color: #17a2b8;
+        }
+
+        .reroll-btn:hover {
+            background-color: #117a8b;
+        }
+
+        /* Second Page Header & Toolbar */
+        .page-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-toolbar h2 {
+            margin: 0;
+        }
+
+        .toolbar-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            font-size: 14px;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        /* Problem Card Layout */
+        .problem-row {
+            margin-bottom: 25px;
+            padding: 20px 24px;
+            background: #ffffff;
+            border-left: 4px solid #0056b3;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .problem-header {
+            margin-bottom: 10px;
+        }
+
+        .problem-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #003366;
+        }
+
+        .problem-body {
+            font-size: 17px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+        }
+
+        /* Origin and Domain Tags on New Line Below */
+        .problem-footer {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .origin-code {
+            display: inline-block;
+            background-color: #eef5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 9px;
+            border-radius: 4px;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            border: 1px solid #c8e6c9;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        /* Error Notification Banner */
+        #error-banner {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Print / PDF Output Styling */
+        @media print {
+            body {
+                max-width: 100%;
+                margin: 0;
+                padding: 10mm;
+                background: none;
+            }
+
+            body::before {
+                display: none;
+            }
+
+            #landing-page, .toolbar-buttons {
+                display: none !important;
+            }
+
+            #problems-page {
+                display: block !important;
+                box-shadow: none;
+                padding: 0;
+                background: none;
+            }
+
+            .problem-row {
+                box-shadow: none;
+                border: 1px solid #bbb;
+                border-left: 4px solid #333;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                margin-bottom: 22px;
+                padding: 16px 20px;
+            }
+
+            .origin-code, .tag-badge {
+                background-color: #f2f2f2 !important;
+                color: #111 !important;
+                border: 1px solid #888 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Mobile Viewport */
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            #landing-page, #problems-page {
+                padding: 20px;
+            }
+
+            .page-toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toolbar-buttons {
+                width: 100%;
+            }
+
+            .toolbar-buttons button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Landing Page (Filters & Configuration) -->
+    <div id="landing-page">
+        <h1 style="text-align: center;">Math Practice Generator</h1>
+        <p class="subtitle" style="text-align: center;">Configure your target parameters or jump directly to a specific contest problem.</p>
+
+        <!-- Direct Lookup Section -->
+        <div class="filter-section">
+            <h3>Direct Problem Lookup</h3>
+            <div class="search-row">
+                <input type="text" id="direct-search-input" class="search-input" placeholder="Enter problem code (e.g. MPFG_2024_12 or 2024_12)...">
+                <button id="direct-search-btn" class="secondary-btn">Lookup</button>
+            </div>
+        </div>
+
+        <!-- 1. Contest Years Filter -->
+        <div class="filter-section">
+            <h3>
+                <span>1. Contest Years</span>
+                <span class="filter-actions">
+                    <a id="years-select-all">Select All</a>
+                    <a id="years-clear-all">Clear All</a>
+                </span>
+            </h3>
+            <div class="pill-group" id="year-pills">
+                <!-- Year pills generated by JS -->
+            </div>
+        </div>
+
+        <!-- 2. Domain / Topic Filter -->
+        <div class="filter-section">
+            <h3>
+                <span>2. Subject / Topic</span>
+                <span class="filter-actions">
+                    <a id="topics-select-all">Select All</a>
+                    <a id="topics-clear-all">Clear All</a>
+                </span>
+            </h3>
+            <div class="pill-group" id="topic-pills">
+                <div class="pill active" data-topic="Algebra">Algebra</div>
+                <div class="pill active" data-topic="Geometry">Geometry</div>
+                <div class="pill active" data-topic="Number Theory">Number Theory</div>
+                <div class="pill active" data-topic="Combinatorics">Combinatorics</div>
+            </div>
+        </div>
+
+        <!-- 3. Difficulty Range Dual Slider (1 - 20) -->
+        <div class="filter-section">
+            <h3>3. Difficulty Range (Problems 1–20)</h3>
+            <div class="slider-label">
+                <span>Range Selection:</span>
+                <span id="range-badge" class="slider-value-badge">5 to 10</span>
+            </div>
+
+            <div class="dual-slider-wrapper">
+                <div class="slider-track"></div>
+                <div class="slider-highlight" id="slider-highlight"></div>
+                <input type="range" id="min-diff-slider" min="1" max="20" value="5" step="1">
+                <input type="range" id="max-diff-slider" min="1" max="20" value="10" step="1">
+            </div>
+
+            <div class="range-summary" id="range-summary">
+                Selected: Problems 5 to 10
+            </div>
+        </div>
+
+        <!-- 4. Problem Count Slider (1 - 10) -->
+        <div class="filter-section">
+            <h3>4. Problem Count</h3>
+            <div class="slider-label">
+                <span>Total Problems to Generate:</span>
+                <span id="count-val" class="slider-value-badge">5</span>
+            </div>
+            <input type="range" id="count-slider" class="single-range" min="1" max="10" value="5" step="1">
+        </div>
+
+        <button id="generate-btn" class="btn-green">Generate Set</button>
+        <div id="error-banner"></div>
+    </div>
+
+    <!-- Problems / Worksheet Page -->
+    <div id="problems-page">
+        <div class="page-toolbar">
+            <div>
+                <h2>Practice Worksheet</h2>
+                <div class="meta-tag" id="worksheet-meta"></div>
+            </div>
+            <div class="toolbar-buttons">
+                <button class="secondary-btn" id="back-btn">← Change Settings</button>
+                <button class="reroll-btn" id="reroll-btn">🔀 Re-roll Set</button>
+                <button id="pdf-btn" onclick="window.print()">Save as PDF</button>
+            </div>
+        </div>
+
+        <div id="problems-container"></div>
+    </div>
+
+    <script>
+        const PROBLEM_FILE = './problems.txt';
+        const AVAILABLE_YEARS = [2015, 2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025];
+        let loadedProblems = [];
+
+        // DOM References
+        const landingPage = document.getElementById('landing-page');
+        const problemsPage = document.getElementById('problems-page');
+        const problemsContainer = document.getElementById('problems-container');
+        const worksheetMeta = document.getElementById('worksheet-meta');
+        const errorBanner = document.getElementById('error-banner');
+
+        const yearPillsContainer = document.getElementById('year-pills');
+        const topicPillsContainer = document.getElementById('topic-pills');
+        const minSlider = document.getElementById('min-diff-slider');
+        const maxSlider = document.getElementById('max-diff-slider');
+        const sliderHighlight = document.getElementById('slider-highlight');
+        const rangeBadge = document.getElementById('range-badge');
+        const rangeSummary = document.getElementById('range-summary');
+        const countSlider = document.getElementById('count-slider');
+        const countValDisplay = document.getElementById('count-val');
+
+        const generateBtn = document.getElementById('generate-btn');
+        const rerollBtn = document.getElementById('reroll-btn');
+        const backBtn = document.getElementById('back-btn');
+        const directSearchInput = document.getElementById('direct-search-input');
+        const directSearchBtn = document.getElementById('direct-search-btn');
+
+        // Populate Year Pills
+        AVAILABLE_YEARS.forEach(yr => {
+            const pill = document.createElement('div');
+            pill.className = 'pill active';
+            pill.dataset.year = yr;
+            pill.textContent = yr;
+            pill.addEventListener('click', () => pill.classList.toggle('active'));
+            yearPillsContainer.appendChild(pill);
+        });
+
+        // Topic Pills Listener
+        document.querySelectorAll('#topic-pills .pill').forEach(pill => {
+            pill.addEventListener('click', () => pill.classList.toggle('active'));
+        });
+
+        // Quick Select / Clear Links
+        document.getElementById('years-select-all').addEventListener('click', () => {
+            document.querySelectorAll('#year-pills .pill').forEach(p => p.classList.add('active'));
+        });
+        document.getElementById('years-clear-all').addEventListener('click', () => {
+            document.querySelectorAll('#year-pills .pill').forEach(p => p.classList.remove('active'));
+        });
+        document.getElementById('topics-select-all').addEventListener('click', () => {
+            document.querySelectorAll('#topic-pills .pill').forEach(p => p.classList.add('active'));
+        });
+        document.getElementById('topics-clear-all').addEventListener('click', () => {
+            document.querySelectorAll('#topic-pills .pill').forEach(p => p.classList.remove('active'));
+        });
+
+        // Dual-Thumb Slider Controller
+        function updateDualSlider(e) {
+            let minVal = parseInt(minSlider.value, 10);
+            let maxVal = parseInt(maxSlider.value, 10);
+
+            if (e && e.target === minSlider) {
+                if (minVal > maxVal) {
+                    minVal = maxVal;
+                    minSlider.value = minVal;
+                }
+                minSlider.style.zIndex = "5";
+                maxSlider.style.zIndex = "3";
+            } else if (e && e.target === maxSlider) {
+                if (maxVal < minVal) {
+                    maxVal = minVal;
+                    maxSlider.value = maxVal;
+                }
+                maxSlider.style.zIndex = "5";
+                minSlider.style.zIndex = "3";
+            }
+
+            const minPercent = ((minVal - 1) / 19) * 100;
+            const maxPercent = ((maxVal - 1) / 19) * 100;
+
+            sliderHighlight.style.left = `${minPercent}%`;
+            sliderHighlight.style.width = `${maxPercent - minPercent}%`;
+
+            const label = `${minVal} to ${maxVal}`;
+            rangeBadge.textContent = label;
+            rangeSummary.textContent = `Selected: Problems ${label}`;
+        }
+
+        minSlider.addEventListener('input', updateDualSlider);
+        maxSlider.addEventListener('input', updateDualSlider);
+
+        countSlider.addEventListener('input', () => {
+            countValDisplay.textContent = countSlider.value;
+        });
+
+        // Parse problem file blocks
+        function parseProblemText(rawText) {
+            const list = [];
+            const rawBlocks = rawText.split(/(?=\[(?:MPFG|MFPG)_\d{4}_\d+\])/gi);
+
+            for (const block of rawBlocks) {
+                const trimmed = block.trim();
+                if (!trimmed) continue;
+
+                const headerMatch = trimmed.match(/^\[((?:MPFG|MFPG)_(\d{4})_(\d+))\]/i);
+                if (!headerMatch) continue;
+
+                const origin = headerMatch[1].toUpperCase();
+                const year = parseInt(headerMatch[2], 10);
+                const difficulty = parseInt(headerMatch[3], 10);
+
+                let rest = trimmed.slice(headerMatch[0].length).trim();
+                let tags = [];
+
+                const tagMatch = rest.match(/^\[TAGS?:\s*([^\]]+)\]/i);
+                if (tagMatch) {
+                    tags = tagMatch[1].split(',').map(t => t.trim());
+                    rest = rest.slice(tagMatch[0].length).trim();
+                }
+
+                list.push({ origin, year, difficulty, tags, content: rest });
+            }
+            return list;
+        }
+
+        async function loadProblems() {
+            try {
+                const res = await fetch(PROBLEM_FILE);
+                if (!res.ok) throw new Error(`Could not load ${PROBLEM_FILE} (HTTP ${res.status})`);
+                const text = await res.text();
+                loadedProblems = parseProblemText(text);
+                if (loadedProblems.length === 0) throw new Error('No problems were matched in problems.txt.');
+            } catch (err) {
+                console.error(err);
+                showError(`Failed to load problem file: ${err.message}`);
+            }
+        }
+
+        function showError(msg) {
+            errorBanner.textContent = msg;
+            errorBanner.style.display = 'block';
+        }
+
+        function clearError() {
+            errorBanner.textContent = '';
+            errorBanner.style.display = 'none';
+        }
+
+        function shuffle(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        // Execution of Random Set Generation
+        function generateRandomSet() {
+            clearError();
+
+            if (loadedProblems.length === 0) {
+                showError("Problems are still loading. Please wait a moment and try again.");
+                return;
+            }
+
+            const activeYears = new Set(
+                Array.from(document.querySelectorAll('#year-pills .pill.active')).map(p => parseInt(p.dataset.year, 10))
+            );
+            const activeTopics = new Set(
+                Array.from(document.querySelectorAll('#topic-pills .pill.active')).map(p => p.dataset.topic)
+            );
+
+            if (activeYears.size === 0) {
+                showError("Please select at least one contest year.");
+                return;
+            }
+            if (activeTopics.size === 0) {
+                showError("Please select at least one subject topic.");
+                return;
+            }
+
+            const minDiff = parseInt(minSlider.value, 10);
+            const maxDiff = parseInt(maxSlider.value, 10);
+            const requestedCount = parseInt(countSlider.value, 10);
+
+            // Filter problems by year, topic, and difficulty
+            const matching = loadedProblems.filter(p => {
+                if (!activeYears.has(p.year)) return false;
+                if (p.difficulty < minDiff || p.difficulty > maxDiff) return false;
+                return p.tags.some(tag => activeTopics.has(tag));
+            });
+
+            if (matching.length === 0) {
+                showError(`No problems match the chosen criteria (Years: ${Array.from(activeYears).join(', ')}, Topics: ${Array.from(activeTopics).join(', ')}, Difficulty: ${minDiff}–${maxDiff}).`);
+                return;
+            }
+
+            const selected = shuffle(matching).slice(0, Math.min(requestedCount, matching.length));
+            const exhaustionNote = selected.length < requestedCount ? ` (All ${selected.length} unique available)` : '';
+
+            renderProblems(
+                selected,
+                `Generated ${selected.length} Problem(s)${exhaustionNote} | Difficulty ${minDiff}–${maxDiff} | Topics: ${Array.from(activeTopics).join(', ')}`
+            );
+
+            landingPage.style.display = 'none';
+            problemsPage.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // Direct Lookup Handler
+        function handleDirectSearch() {
+            clearError();
+            const rawQuery = directSearchInput.value.trim().toUpperCase();
+            if (!rawQuery) {
+                showError("Please enter a problem code to search (e.g., MPFG_2024_12).");
+                return;
+            }
+
+            // Match full tag or numeric suffix like "2024_12"
+            const match = loadedProblems.find(p => p.origin === rawQuery || p.origin.endsWith(rawQuery));
+
+            if (!match) {
+                showError(`Problem "${rawQuery}" not found. Verify the year and index.`);
+                return;
+            }
+
+            renderProblems([match], `Direct Lookup: ${match.origin}`);
+            landingPage.style.display = 'none';
+            problemsPage.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // Render Problems on Second Page
+        function renderProblems(problems, metaText) {
+            problemsContainer.innerHTML = '';
+            worksheetMeta.textContent = `${metaText} | ${new Date().toLocaleDateString()}`;
+
+            problems.forEach((prob, index) => {
+                const row = document.createElement('div');
+                row.className = 'problem-row';
+
+                const tagBadges = prob.tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+
+                row.innerHTML = `
+                    <div class="problem-header">
+                        <span class="problem-number">Problem ${index + 1}</span>
+                    </div>
+                    <div class="problem-body">${prob.content}</div>
+                    <div class="problem-footer">
+                        <span class="origin-code">[${prob.origin}]</span>
+                        ${tagBadges}
+                    </div>
+                `;
+                problemsContainer.appendChild(row);
+            });
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Event Listeners
+        generateBtn.addEventListener('click', generateRandomSet);
+        rerollBtn.addEventListener('click', generateRandomSet);
+        directSearchBtn.addEventListener('click', handleDirectSearch);
+        directSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleDirectSearch();
+        });
+
+        backBtn.addEventListener('click', () => {
+            problemsPage.style.display = 'none';
+            landingPage.style.display = 'block';
+            window.scrollTo(0, 0);
+        });
+
+        // Initialize Slider & Load Problem Bank
+        updateDualSlider();
+        loadProblems();
+    </script>
+</body>
+</html>
