@@ -68,14 +68,14 @@
             margin-bottom: 25px;
         }
 
-        /* Slider Controls */
+        /* Slider Control Cards */
         .slider-section {
             background: #f8f9fa;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
+            padding: 20px 25px;
             margin: 20px auto;
-            max-width: 550px;
+            max-width: 560px;
             text-align: left;
         }
 
@@ -90,7 +90,7 @@
             justify-content: space-between;
             font-weight: bold;
             font-size: 15px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .slider-value-badge {
@@ -98,21 +98,97 @@
             font-weight: bold;
         }
 
-        input[type="range"] {
+        /* Dual-Thumb Range Slider */
+        .dual-slider-wrapper {
+            position: relative;
             width: 100%;
-            margin: 8px 0 16px 0;
+            height: 38px;
+            margin: 10px 0 16px 0;
+        }
+
+        .slider-track {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 3px;
+            z-index: 1;
+        }
+
+        .slider-highlight {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            background-color: #0056b3;
+            border-radius: 3px;
+            z-index: 2;
+        }
+
+        .dual-slider-wrapper input[type="range"] {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            appearance: none;
+            z-index: 3;
+        }
+
+        /* WebKit Thumbs */
+        .dual-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #0056b3;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.1s ease;
+        }
+
+        .dual-slider-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Firefox Thumbs */
+        .dual-slider-wrapper input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #0056b3;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Standard Single Range Input */
+        .single-range {
+            width: 100%;
+            margin: 10px 0 5px 0;
             cursor: pointer;
         }
 
         .range-summary {
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #0056b3;
             background: #eef5ff;
             padding: 8px;
             border-radius: 4px;
-            margin-top: 5px;
+            margin-top: 8px;
         }
 
         /* Buttons */
@@ -131,14 +207,15 @@
             background-color: #004085;
         }
 
-        #done-btn {
+        #generate-btn {
             background-color: #28a745;
             font-size: 19px;
-            padding: 12px 36px;
+            padding: 12px 38px;
             margin-top: 15px;
+            font-weight: bold;
         }
 
-        #done-btn:hover {
+        #generate-btn:hover {
             background-color: #218838;
         }
 
@@ -150,7 +227,7 @@
             background-color: #5a6268;
         }
 
-        /* Second Page Header & Toolbar */
+        /* Problems Page Header & Toolbar */
         .page-toolbar {
             display: flex;
             justify-content: space-between;
@@ -177,10 +254,10 @@
             margin-top: 4px;
         }
 
-        /* Problem Rows */
+        /* Problem Card Layout */
         .problem-row {
             margin-bottom: 25px;
-            padding: 20px;
+            padding: 20px 24px;
             background: #ffffff;
             border-left: 4px solid #0056b3;
             border-radius: 6px;
@@ -188,48 +265,42 @@
         }
 
         .problem-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .problem-number {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: bold;
-            color: #333;
-        }
-
-        .origin-code {
-            display: inline-block;
-            background-color: #e3f2fd;
-            color: #0d47a1;
-            border: 1px solid #bbdefb;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 13px;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
+            color: #003366;
         }
 
         .problem-body {
             font-size: 17px;
             line-height: 1.7;
             white-space: pre-wrap;
+            margin-bottom: 15px;
         }
 
-        /* Optional Student Working Area */
-        .workspace-box {
-            margin-top: 15px;
-            border-top: 1px dashed #ccc;
+        /* Origin Box Placed on a New Line Below Statement */
+        .problem-footer {
+            margin-top: 12px;
             padding-top: 10px;
-            color: #888;
-            font-size: 13px;
-            font-style: italic;
-            min-height: 70px;
+            border-top: 1px solid #eee;
         }
 
-        /* Error Banner */
+        .origin-code {
+            display: inline-block;
+            background-color: #eef5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 9px;
+            border-radius: 4px;
+        }
+
+        /* Error Notification Banner */
         #error-banner {
             color: #721c24;
             background-color: #f8d7da;
@@ -240,12 +311,12 @@
             display: none;
         }
 
-        /* Print / Save to PDF Styles */
+        /* Print / PDF Output Styling */
         @media print {
             body {
                 max-width: 100%;
                 margin: 0;
-                padding: 10mm;
+                padding: 12mm;
                 background: none;
             }
 
@@ -270,24 +341,20 @@
                 border-left: 4px solid #333;
                 page-break-inside: avoid;
                 break-inside: avoid;
-                margin-bottom: 20px;
-                padding: 15px;
+                margin-bottom: 22px;
+                padding: 16px 20px;
             }
 
             .origin-code {
-                background-color: #f0f0f0 !important;
-                color: #000 !important;
-                border: 1px solid #999 !important;
+                background-color: #f2f2f2 !important;
+                color: #111 !important;
+                border: 1px solid #888 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-
-            .workspace-box {
-                min-height: 120px;
-            }
         }
 
-        /* Mobile Layout */
+        /* Mobile Viewport */
         @media (max-width: 768px) {
             body {
                 margin: 10px;
@@ -315,47 +382,47 @@
 </head>
 <body>
 
-    <!-- Landing Page (Selection) -->
+    <!-- Landing Page (Difficulty & Quantity Setup) -->
     <div id="landing-page">
         <h1>Math Practice Generator</h1>
-        <p class="subtitle">Select your target difficulty range and choose how many problems you want to practice.</p>
+        <p class="subtitle">Set your difficulty bounds and select the number of practice problems to compile.</p>
 
-        <!-- Slider 1: Difficulty Range (1 - 20) -->
+        <!-- 1. Difficulty Range Dual Slider (1 - 20) -->
         <div class="slider-section">
-            <h3>1. Difficulty Range (Problems 1–20)</h3>
-            
+            <h3>Difficulty Range (Problems 1–20)</h3>
             <div class="slider-label">
-                <span>Minimum Difficulty:</span>
-                <span id="min-diff-val" class="slider-value-badge">5</span>
+                <span>Range Selection:</span>
+                <span id="range-badge" class="slider-value-badge">5 to 10</span>
             </div>
-            <input type="range" id="min-diff-slider" min="1" max="20" value="5">
 
-            <div class="slider-label">
-                <span>Maximum Difficulty:</span>
-                <span id="max-diff-val" class="slider-value-badge">10</span>
+            <div class="dual-slider-wrapper">
+                <div class="slider-track"></div>
+                <div class="slider-highlight" id="slider-highlight"></div>
+                <input type="range" id="min-diff-slider" min="1" max="20" value="5" step="1">
+                <input type="range" id="max-diff-slider" min="1" max="20" value="10" step="1">
             </div>
-            <input type="range" id="max-diff-slider" min="1" max="20" value="10">
 
             <div class="range-summary" id="range-summary">
                 Selected: Problems 5 to 10
             </div>
         </div>
 
-        <!-- Slider 2: Number of Problems (1 - 5) -->
+        <!-- 2. Problem Count Slider (1 - 10) -->
         <div class="slider-section">
-            <h3>2. Problem Count</h3>
+            <h3>Problem Count</h3>
             <div class="slider-label">
-                <span>Total Problems:</span>
-                <span id="count-val" class="slider-value-badge">3</span>
+                <span>Total Problems to Generate:</span>
+                <span id="count-val" class="slider-value-badge">5</span>
             </div>
-            <input type="range" id="count-slider" min="1" max="5" value="3">
+            <input type="range" id="count-slider" class="single-range" min="1" max="10" value="5" step="1">
         </div>
 
-        <button id="done-btn">Done (Generate Set)</button>
+        <!-- 3. Action Button -->
+        <button id="generate-btn">Generate Set</button>
         <div id="error-banner"></div>
     </div>
 
-    <!-- Second Page (Problems & Print to PDF) -->
+    <!-- Practice / Print Page -->
     <div id="problems-page">
         <div class="page-toolbar">
             <div>
@@ -372,68 +439,71 @@
     </div>
 
     <script>
-        // Path to your problem bank file hosted on GitPages
         const PROBLEM_FILE = './problems.txt';
-
         let loadedProblems = [];
 
-        // DOM Elements
+        // Landing Elements
         const minSlider = document.getElementById('min-diff-slider');
         const maxSlider = document.getElementById('max-diff-slider');
-        const minValDisplay = document.getElementById('min-diff-val');
-        const maxValDisplay = document.getElementById('max-diff-val');
+        const sliderHighlight = document.getElementById('slider-highlight');
+        const rangeBadge = document.getElementById('range-badge');
         const rangeSummary = document.getElementById('range-summary');
 
         const countSlider = document.getElementById('count-slider');
         const countValDisplay = document.getElementById('count-val');
 
-        const doneBtn = document.getElementById('done-btn');
+        const generateBtn = document.getElementById('generate-btn');
         const backBtn = document.getElementById('back-btn');
         const errorBanner = document.getElementById('error-banner');
 
+        // Target Pages
         const landingPage = document.getElementById('landing-page');
         const problemsPage = document.getElementById('problems-page');
         const problemsContainer = document.getElementById('problems-container');
         const worksheetMeta = document.getElementById('worksheet-meta');
 
-        // Difficulty Sliders Synchronization
-        function updateDifficultyDisplays() {
-            let min = parseInt(minSlider.value, 10);
-            let max = parseInt(maxSlider.value, 10);
+        // Sync & Render Dual-Handle Slider
+        function updateDualSlider(e) {
+            let minVal = parseInt(minSlider.value, 10);
+            let maxVal = parseInt(maxSlider.value, 10);
 
-            // Keep min <= max
-            if (min > max) {
-                max = min;
-                maxSlider.value = max;
+            // Prevent thumbs from crossing over
+            if (e && e.target === minSlider) {
+                if (minVal > maxVal) {
+                    minVal = maxVal;
+                    minSlider.value = minVal;
+                }
+                minSlider.style.zIndex = "5";
+                maxSlider.style.zIndex = "3";
+            } else if (e && e.target === maxSlider) {
+                if (maxVal < minVal) {
+                    maxVal = minVal;
+                    maxSlider.value = maxVal;
+                }
+                maxSlider.style.zIndex = "5";
+                minSlider.style.zIndex = "3";
             }
 
-            minValDisplay.textContent = min;
-            maxValDisplay.textContent = max;
-            rangeSummary.textContent = `Selected: Problems ${min} to ${max}`;
+            const minPercent = ((minVal - 1) / 19) * 100;
+            const maxPercent = ((maxVal - 1) / 19) * 100;
+
+            sliderHighlight.style.left = `${minPercent}%`;
+            sliderHighlight.style.width = `${maxPercent - minPercent}%`;
+
+            const label = `${minVal} to ${maxVal}`;
+            rangeBadge.textContent = label;
+            rangeSummary.textContent = `Selected: Problems ${label}`;
         }
 
-        minSlider.addEventListener('input', updateDifficultyDisplays);
-        maxSlider.addEventListener('input', () => {
-            let min = parseInt(minSlider.value, 10);
-            let max = parseInt(maxSlider.value, 10);
+        minSlider.addEventListener('input', updateDualSlider);
+        maxSlider.addEventListener('input', updateDualSlider);
 
-            if (max < min) {
-                min = max;
-                minSlider.value = min;
-            }
-
-            minValDisplay.textContent = min;
-            maxValDisplay.textContent = max;
-            rangeSummary.textContent = `Selected: Problems ${min} to ${max}`;
-        });
-
-        // Problem Count Slider
+        // Problem Count Listener
         countSlider.addEventListener('input', () => {
             countValDisplay.textContent = countSlider.value;
         });
 
-        // Parse Problem Bank
-        // Expected format: [MPFG_YYYY_N] or MPFG_YYYY_N on its own line followed by LaTeX body
+        // Parse File Problems
         function parseProblemText(rawText) {
             const list = [];
             const regex = /(?:^|\n)\s*\[?([A-Za-z0-9]+_\d{4}_(\d+))\]?\s*[\r\n]+([\s\S]*?)(?=(?:\n\s*\[?[A-Za-z0-9]+_\d{4}_\d+\]?)|$)/g;
@@ -451,7 +521,7 @@
             return list;
         }
 
-        // Fetch problems file
+        // Fetch Problems File
         async function loadProblems() {
             try {
                 const response = await fetch(PROBLEM_FILE);
@@ -462,11 +532,11 @@
                 loadedProblems = parseProblemText(text);
 
                 if (loadedProblems.length === 0) {
-                    throw new Error('Problem file was loaded, but no valid problem codes (e.g. MPFG_2020_1) were found.');
+                    throw new Error('Problem file loaded, but no valid codes (e.g. MPFG_2020_1) were matched.');
                 }
             } catch (err) {
-                console.warn("Fetch failed, using local fallback if running from file://", err);
-                showError(`Failed to load problem file: ${err.message}. Make sure problems.txt is present.`);
+                console.error(err);
+                showError(`Failed to load problem file: ${err.message}. Ensure problems.txt is in the same directory.`);
             }
         }
 
@@ -490,12 +560,12 @@
             return arr;
         }
 
-        // Done button event handler
-        doneBtn.addEventListener('click', () => {
+        // Generate Set Handler
+        generateBtn.addEventListener('click', () => {
             clearError();
 
             if (loadedProblems.length === 0) {
-                showError("Problems are still loading or the file could not be read. Please refresh and check console.");
+                showError("Problems are still loading or the file could not be read. Please refresh and try again.");
                 return;
             }
 
@@ -503,21 +573,27 @@
             const maxDiff = parseInt(maxSlider.value, 10);
             const requestedCount = parseInt(countSlider.value, 10);
 
-            // Filter problems matching the difficulty criteria
-            const matchingProblems = loadedProblems.filter(
-                p => p.difficulty >= minDiff && p.difficulty <= maxDiff
-            );
+            // Filter unique problems by range
+            const matchingMap = new Map();
+            loadedProblems.forEach(p => {
+                if (p.difficulty >= minDiff && p.difficulty <= maxDiff) {
+                    if (!matchingMap.has(p.origin)) {
+                        matchingMap.set(p.origin, p);
+                    }
+                }
+            });
 
-            if (matchingProblems.length === 0) {
+            const uniqueMatching = Array.from(matchingMap.values());
+
+            if (uniqueMatching.length === 0) {
                 showError(`No problems found with difficulty between ${minDiff} and ${maxDiff}. Please widen your range.`);
                 return;
             }
 
-            // Pick a random subset
-            const selected = shuffle(matchingProblems).slice(0, Math.min(requestedCount, matchingProblems.length));
+            // Shuffle and slice to prevent duplicates; clamp to maximum available unique problems
+            const selected = shuffle(uniqueMatching).slice(0, Math.min(requestedCount, uniqueMatching.length));
 
-            // Render on page 2
-            renderProblems(selected, minDiff, maxDiff);
+            renderProblems(selected, minDiff, maxDiff, requestedCount);
 
             landingPage.style.display = 'none';
             problemsPage.style.display = 'block';
@@ -525,40 +601,48 @@
         });
 
         // Render Problems on Second Page
-        function renderProblems(problems, minDiff, maxDiff) {
+        function renderProblems(problems, minDiff, maxDiff, requestedCount) {
             problemsContainer.innerHTML = '';
-            worksheetMeta.textContent = `Generated ${problems.length} Problem(s) | Difficulty Range: ${minDiff} to ${maxDiff} | ${new Date().toLocaleDateString()}`;
+
+            const exhaustionNote = problems.length < requestedCount
+                ? ` (All ${problems.length} unique available shown)`
+                : '';
+
+            worksheetMeta.textContent = `Generated ${problems.length} Problem(s)${exhaustionNote} | Difficulty Range: ${minDiff}–${maxDiff} | ${new Date().toLocaleDateString()}`;
 
             problems.forEach((prob, index) => {
                 const row = document.createElement('div');
                 row.className = 'problem-row';
 
+                // Problem number at the top, problem text, and origin box below
                 row.innerHTML = `
                     <div class="problem-header">
-                        <span class="origin-code">[${prob.origin}]</span>
                         <span class="problem-number">Problem ${index + 1}</span>
                     </div>
                     <div class="problem-body">${prob.content}</div>
-                    <div class="workspace-box">Workspace / Scratch Area</div>
+                    <div class="problem-footer">
+                        <span class="origin-code">[${prob.origin}]</span>
+                    </div>
                 `;
 
                 problemsContainer.appendChild(row);
             });
 
-            // Re-render LaTeX with MathJax
+            // Re-render LaTeX
             if (window.MathJax && MathJax.typesetPromise) {
                 MathJax.typesetPromise();
             }
         }
 
-        // Back to Selection Button
+        // Return to Setup
         backBtn.addEventListener('click', () => {
             problemsPage.style.display = 'none';
             landingPage.style.display = 'block';
             window.scrollTo(0, 0);
         });
 
-        // Initialize on load
+        // Initialize dual slider bar and load questions
+        updateDualSlider();
         loadProblems();
     </script>
 </body>
